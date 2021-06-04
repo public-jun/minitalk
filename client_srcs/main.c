@@ -5,26 +5,36 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/04 16:58:54 by jnakahod         ###   ########.fr       */
+/*   Created: 2021/06/04 17:16:14 by jnakahod          #+#    #+#             */
+/*   Updated: 2021/06/04 19:34:26 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "../libft/libft.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	char *pid;
+	int	i;
+	char	*pid;
 
-	//system("ps | grep ./server");
-
-	pid = ft_itoa((int)getpid());
-
-	write(1, "SERVER PID: ", 12);
-	write(1, pid, (int)ft_strlen(pid));
-	write(1, "\n", 1);
-	free_set(&pid, NULL);
-	//system("leaks server");
+	if (argc != 3)
+	{
+		ft_putstr_fd("./client [server PID] [String]\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	pid = argv[1];
+	i =  0;
+	while (pid[i])
+	{
+		if (!ft_isdigit((int)pid[i]))
+		{
+			ft_putstr_fd("./client [server PID] [String]\n", 2);
+			exit(EXIT_FAILURE);
+		}
+		i++;
+	}
+	//killでserverに命令してみる
 	return (0);
 }
