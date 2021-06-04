@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/04 16:26:09 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/04 16:58:54 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ int	main(void)
 	write(1, pid, (int)ft_strlen(pid));
 	write(1, "\n", 1);
 	free_set(&pid, NULL);
+	//system("leaks server");
 	return (0);
 }
