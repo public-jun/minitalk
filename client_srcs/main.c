@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 17:16:14 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/08 13:24:01 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/08 22:30:05 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	send_bit(pid_t server_pid, unsigned char byte)
 		usleep(600);
 	}
 }
-// 'a'を送信してみる
+
 void	send_string(pid_t server_pid, char *str)
 {
 
@@ -86,11 +86,5 @@ int	main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	send_string(pid, argv[2]);
-	//killでserverに命令してみる
-	// if (kill(pid, SIGUSR1) < 0)
-	// {
-	// 	ft_putstr_fd("kill error\n", 2);
-	// 	exit(EXIT_FAILURE);
-	// }
 	return (0);
 }
