@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/08 16:11:22 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/08 22:19:46 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include "../libft/libft.h"
-#define BUFFER_SIZE 1026
+#define BUFFER_SIZE 1024
 
 // void	handler(int signo)
 // {
@@ -123,15 +123,21 @@ int	main(void)
 	while (1)
 	{
 		pause();
+		//ヌル文字が送信されたら出力
 		if (message[now_byte - 1] == 0 && !now_bit)
 		{
 			write(1, message, now_byte - 1);
-			// write(1, "\n", 1);
-			// printf("message[0]:%d\n", message[0]);
-			// printf("message[1]:%d\n", message[1]);
-			// printf("message[2]:%d\n", message[2]);
-			// printf("message[3]:%d\n", message[3]);
 			ft_memset(message, 0b0, BUFFER_SIZE);
+			now_bit = 0;
+			now_byte = 0;
+		}
+		//BUFFERがMAX時
+		else if (now_byte == BUFFER_SIZE)
+		{
+			write(1, message, BUFFER_SIZE);
+			ft_memset(message, 0b0, BUFFER_SIZE);
+			now_bit = 0;
+			now_byte = 0;
 		}
 	}
 	return (0);
