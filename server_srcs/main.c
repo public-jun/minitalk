@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/08 22:19:46 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/08 23:25:39 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 #include "../libft/libft.h"
 #define BUFFER_SIZE 1024
 
-// void	handler(int signo)
-// {
-// 	ft_putstr_fd("signal SIGUSR1!!!\n", 1);
-// }
 
 char	message[BUFFER_SIZE];
 
@@ -33,12 +29,8 @@ void	init_mess(void)
 
 void	action_on(int signo, siginfo_t *info, void *context)
 {
-	//ft_putstr_fd("sigaction SIGUSR1!!!\n", 1);
-	// write(1, "1", 1);
-	// message[0] |= (1 << now_bit);
 	message[now_byte] <<= 1;
 	message[now_byte]++;
-	// printf("message:%d\n", message[0]);
 	now_bit++;
 	if (now_bit == 8)
 	{
@@ -50,11 +42,7 @@ void	action_on(int signo, siginfo_t *info, void *context)
 
 void	action_off(int signo, siginfo_t *info, void *context)
 {
-	//ft_putstr_fd("sigaction SIGUSR2!!!\n", 1);
-	// write(1, "0", 1);
-	// message[0] &= ~(1 << now_bit);
 	message[now_byte] <<= 1;
-	// printf("message:%d\n", message[0]);
 	now_bit++;
 	if (now_bit == 8)
 	{
@@ -94,8 +82,8 @@ int	main(void)
 	act_on.sa_mask = sigset;
 	act_off.sa_mask = sigset;
 
-	act_on.sa_flags = SA_SIGINFO;
-	act_off.sa_flags = SA_SIGINFO;
+	act_on.sa_flags = SA_SIGINFO | SA_RESTART;
+	act_off.sa_flags = SA_SIGINFO | SA_RESTART;
 
 	ret = sigaction(SIGUSR1, &act_on, NULL);
 	if (ret < 0)
@@ -110,7 +98,6 @@ int	main(void)
 		ft_putstr_fd("sigaction error\n", 2);
 		exit(1);
 	}
-	//system("ps | grep ./server");
 
 	pid = ft_itoa((int)getpid());
 
@@ -118,8 +105,6 @@ int	main(void)
 	write(1, pid, (int)ft_strlen(pid));
 	write(1, "\n", 1);
 	free_set(&pid, NULL);
-	//system("leaks server");
-	// signal(SIGUSR1, handler);
 	while (1)
 	{
 		pause();
@@ -130,6 +115,7 @@ int	main(void)
 			ft_memset(message, 0b0, BUFFER_SIZE);
 			now_bit = 0;
 			now_byte = 0;
+			system("leaks server");
 		}
 		//BUFFERがMAX時
 		else if (now_byte == BUFFER_SIZE)
