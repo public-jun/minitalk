@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/07 23:45:00 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/08 16:11:22 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,53 @@
 #include <signal.h>
 #include <stdio.h>
 #include "../libft/libft.h"
+#define BUFFER_SIZE 1026
 
 // void	handler(int signo)
 // {
 // 	ft_putstr_fd("signal SIGUSR1!!!\n", 1);
 // }
 
-char	message[2];
+char	message[BUFFER_SIZE];
 
 int	now_bit = 0;
+int	now_byte = 0;
 
 void	init_mess(void)
 {
-	ft_memset(message, 0b0, 2);
+	ft_memset(message, 0b0, BUFFER_SIZE);
 }
 
 void	action_on(int signo, siginfo_t *info, void *context)
 {
 	//ft_putstr_fd("sigaction SIGUSR1!!!\n", 1);
-	write(1, "1", 1);
+	// write(1, "1", 1);
 	// message[0] |= (1 << now_bit);
-	message[0] <<= 1;
-	message[0]++;
-	printf("message:%d\n", message[0]);
+	message[now_byte] <<= 1;
+	message[now_byte]++;
+	// printf("message:%d\n", message[0]);
 	now_bit++;
+	if (now_bit == 8)
+	{
+		now_byte++;
+		now_bit = 0;
+	}
 }
 
 
 void	action_off(int signo, siginfo_t *info, void *context)
 {
 	//ft_putstr_fd("sigaction SIGUSR2!!!\n", 1);
-	write(1, "0", 1);
+	// write(1, "0", 1);
 	// message[0] &= ~(1 << now_bit);
-	message[0] <<= 1;
-	printf("message:%d\n", message[0]);
+	message[now_byte] <<= 1;
+	// printf("message:%d\n", message[0]);
 	now_bit++;
+	if (now_bit == 8)
+	{
+		now_byte++;
+		now_bit = 0;
+	}
 }
 
 int	main(void)
@@ -111,10 +123,15 @@ int	main(void)
 	while (1)
 	{
 		pause();
-		if (now_bit == 8)
+		if (message[now_byte - 1] == 0 && !now_bit)
 		{
-			write(1, message, 1);
-			printf("message:%d\n", message[0]);
+			write(1, message, now_byte - 1);
+			// write(1, "\n", 1);
+			// printf("message[0]:%d\n", message[0]);
+			// printf("message[1]:%d\n", message[1]);
+			// printf("message[2]:%d\n", message[2]);
+			// printf("message[3]:%d\n", message[3]);
+			ft_memset(message, 0b0, BUFFER_SIZE);
 		}
 	}
 	return (0);

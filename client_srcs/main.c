@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 17:16:14 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/07 23:20:39 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/08 13:24:01 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@
 #include <stdio.h>
 #include "../libft/libft.h"
 
-// 'a'を送信してみる
-void	send_a(pid_t server_pid)
+void	send_bit(pid_t server_pid, unsigned char byte)
 {
-	unsigned char byte = 'a'; //0b01100001
-
-	uint8_t	counter;
+	uint32_t counter;
 
 	counter = 1 << 7;
 	while (counter)
@@ -47,6 +44,17 @@ void	send_a(pid_t server_pid)
 		counter >>= 1;
 		usleep(600);
 	}
+}
+// 'a'を送信してみる
+void	send_string(pid_t server_pid, char *str)
+{
+
+	while (*str)
+	{
+		send_bit(server_pid, *str);
+		str++;
+	}
+	send_bit(server_pid, *str);
 }
 
 int	main(int argc, char **argv)
@@ -77,7 +85,7 @@ int	main(int argc, char **argv)
 		ft_putstr_fd("Invalid server PID\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	send_a(pid);
+	send_string(pid, argv[2]);
 	//killでserverに命令してみる
 	// if (kill(pid, SIGUSR1) < 0)
 	// {
