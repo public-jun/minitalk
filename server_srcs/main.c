@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/10 13:24:19 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:02:21 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@
 
 char	message[BUFFER_SIZE];
 char	p_client[BUFFER_SIZE];
+char	*g_tmp = NULL;
 pid_t	client_pid = 0;
 
 int	now_bit = 0;
 int	now_byte = 0;
 bool bool_client_pid = false;
+bool bool_byte_reset = false;
 
 
 void	init_buff(void)
@@ -66,22 +68,14 @@ void	set_message(int	signo)
 	}
 }
 
-void	action_on(int signo, siginfo_t *info, void *context)
+void	get_bit(int signo)
 {
-	if (bool_client_pid == false)
-		get_client_pid(signo);
-	else
-		set_message(signo);
+	g_tmp[now_byte] <<= 1;
+	if (signo == SIGUSR1)
+		g_tmp[now_byte]++;
+	now_bit++;
 }
 
-
-void	action_off(int signo, siginfo_t *info, void *context)
-{
-	if (bool_client_pid == false)
-		get_client_pid(signo);
-	else
-		set_message(signo);
-}
 
 int	main(void)
 {
@@ -109,13 +103,13 @@ int	main(void)
 
 	ft_memset(&act_on, 0, sizeof(struct sigaction));
 	ft_memset(&act_off, 0, sizeof(struct sigaction));
-	act_on.sa_sigaction = action_on;
-	act_off.sa_sigaction = action_off;
+	act_on.sa_handler = get_bit;
+	act_off.sa_handler = get_bit;
 	act_on.sa_mask = sigset;
 	act_off.sa_mask = sigset;
 
-	act_on.sa_flags = SA_SIGINFO | SA_RESTART;
-	act_off.sa_flags = SA_SIGINFO | SA_RESTART;
+	act_on.sa_flags |= SA_RESTART;
+	act_off.sa_flags |= SA_RESTART;
 
 	ret = sigaction(SIGUSR1, &act_on, NULL);
 	if (ret < 0)
@@ -142,35 +136,64 @@ int	main(void)
 	write(1, pid, (int)ft_strlen(pid));
 	write(1, "\n", 1);
 	free_set(&pid, NULL);
+
+	g_tmp = p_client;
 	while (1)
 	{
 		pause();
-		if (bool_client_pid == true && client_pid == 0)
+		if (now_bit == 8)
 		{
-			client_pid = (pid_t)ft_atoi(p_client);
-		}
-		if (message[now_byte - 1] == EOT)
-		{
-			write(1, message, now_byte - 1);
-			if (kill(client_pid, SIGUSR2) < 0)
+			//clientのpidを受け取る
+			if (bool_client_pid == false)
 			{
-				ft_putstr_fd("kill error\n", 2);
-				exit(EXIT_FAILURE);
+				if (!p_client[now_byte])
+				{
+					now_byte = 0;
+					bool_byte_reset = true;
+					bool_client_pid = true;
+					client_pid = (pid_t)ft_atoi(p_client);
+					g_tmp = message;
+				}
 			}
-			ft_memset(message, 0b0, BUFFER_SIZE);
-			ft_memset(p_client, 0b0, BUFFER_SIZE);
+			else if (message[now_byte] == EOT)
+			{
+				write(1, message, now_byte);
+				write(1, "\n", 1);
+				if (kill(client_pid, SIGUSR2) < 0)
+				{
+					ft_putstr_fd("kill error\n", 2);
+					exit(EXIT_FAILURE);
+				}
+				ft_memset(message, 0b0, BUFFER_SIZE);
+				ft_memset(p_client, 0b0, BUFFER_SIZE);
+				now_bit = 0;
+				now_byte = 0;
+				client_pid = 0;
+				bool_client_pid = false;
+				bool_byte_reset = true;
+				g_tmp = p_client;
+			}
+			else if (now_byte + 1 == BUFFER_SIZE)
+			{
+				write(1, message, BUFFER_SIZE);
+				ft_memset(message, 0b0, BUFFER_SIZE);
+				now_byte = 0;
+				bool_byte_reset = true;
+				g_tmp = message;
+			}
+			if (bool_byte_reset == true)
+				bool_byte_reset = false;
+			else
+				now_byte++;
 			now_bit = 0;
-			now_byte = 0;
-			client_pid = 0;
-			bool_client_pid = false;
-			// system("leaks server");
-		}
-		else if (now_byte == BUFFER_SIZE)
-		{
-			write(1, message, BUFFER_SIZE);
-			ft_memset(message, 0b0, BUFFER_SIZE);
-			now_bit = 0;
-			now_byte = 0;
+			if (bool_client_pid == true)
+			{
+				if (kill(client_pid, SIGUSR1) < 0)
+				{
+					ft_putstr_fd("kill error\n", 2);
+					exit(EXIT_FAILURE);
+				}
+			}
 		}
 	}
 	return (0);
