@@ -1,7 +1,7 @@
 NAME := client
 
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror
+#CFLAGS := -Wall -Wextra -Werror
 
 LIBFT_DIR := ../libft
 LIBFT_LIB := $(LIBFT_DIR)/libft.a

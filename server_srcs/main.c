@@ -6,49 +6,81 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/08 23:25:39 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/10 13:24:19 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "../libft/libft.h"
 #define BUFFER_SIZE 1024
+#define EOT 0x04
 
 
 char	message[BUFFER_SIZE];
+char	p_client[BUFFER_SIZE];
+pid_t	client_pid = 0;
 
 int	now_bit = 0;
 int	now_byte = 0;
+bool bool_client_pid = false;
 
-void	init_mess(void)
+
+void	init_buff(void)
 {
 	ft_memset(message, 0b0, BUFFER_SIZE);
+	ft_memset(p_client, 0b0, BUFFER_SIZE);
 }
 
-void	action_on(int signo, siginfo_t *info, void *context)
+void	get_client_pid(int signo)
 {
-	message[now_byte] <<= 1;
-	message[now_byte]++;
+	p_client[now_byte] <<= 1;
+	if (signo == SIGUSR1)
+		p_client[now_byte]++;
 	now_bit++;
 	if (now_bit == 8)
 	{
 		now_byte++;
 		now_bit = 0;
 	}
+	if (!p_client[now_byte - 1] && now_byte > 0)
+	{
+		now_byte = 0;
+		now_bit = 0;
+		bool_client_pid = true;
+	}
+}
+
+void	set_message(int	signo)
+{
+	message[now_byte] <<= 1;
+	if (signo == SIGUSR1)
+		message[now_byte]++;
+	now_bit++;
+	if (now_bit == 8)
+	{
+		now_byte++;
+		now_bit = 0;
+	}
+}
+
+void	action_on(int signo, siginfo_t *info, void *context)
+{
+	if (bool_client_pid == false)
+		get_client_pid(signo);
+	else
+		set_message(signo);
 }
 
 
 void	action_off(int signo, siginfo_t *info, void *context)
 {
-	message[now_byte] <<= 1;
-	now_bit++;
-	if (now_bit == 8)
-	{
-		now_byte++;
-		now_bit = 0;
-	}
+	if (bool_client_pid == false)
+		get_client_pid(signo);
+	else
+		set_message(signo);
 }
 
 int	main(void)
@@ -59,7 +91,7 @@ int	main(void)
 	struct sigaction	act_off;
 	sigset_t			sigset;
 
-	init_mess();
+	init_buff();
 
 	ret = sigemptyset(&sigset);
 	if (ret < 0)
@@ -100,6 +132,11 @@ int	main(void)
 	}
 
 	pid = ft_itoa((int)getpid());
+	if (!pid)
+	{
+		ft_putstr_fd("malloc error\n", 2);
+		exit(1);
+	}
 
 	write(1, "SERVER PID: ", 12);
 	write(1, pid, (int)ft_strlen(pid));
@@ -108,16 +145,26 @@ int	main(void)
 	while (1)
 	{
 		pause();
-		//ヌル文字が送信されたら出力
-		if (message[now_byte - 1] == 0 && !now_bit)
+		if (bool_client_pid == true && client_pid == 0)
+		{
+			client_pid = (pid_t)ft_atoi(p_client);
+		}
+		if (message[now_byte - 1] == EOT)
 		{
 			write(1, message, now_byte - 1);
+			if (kill(client_pid, SIGUSR2) < 0)
+			{
+				ft_putstr_fd("kill error\n", 2);
+				exit(EXIT_FAILURE);
+			}
 			ft_memset(message, 0b0, BUFFER_SIZE);
+			ft_memset(p_client, 0b0, BUFFER_SIZE);
 			now_bit = 0;
 			now_byte = 0;
-			system("leaks server");
+			client_pid = 0;
+			bool_client_pid = false;
+			// system("leaks server");
 		}
-		//BUFFERがMAX時
 		else if (now_byte == BUFFER_SIZE)
 		{
 			write(1, message, BUFFER_SIZE);
