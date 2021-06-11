@@ -6,7 +6,10 @@ CC := gcc
 LIBFT_DIR := ../libft
 LIBFT_LIB := $(LIBFT_DIR)/libft.a
 
-SRCS := ./main.c
+SRCS := ./main.c \
+		./init.c \
+		./print_string.c \
+		./ack.c
 
 OBJS := $(SRCS:%.c=%.o)
 INCLUDE := ../includes
@@ -33,7 +36,7 @@ fclean:
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(RM) $(OBJS) $(NAME)
 
-re: fclean all 
+re: fclean all
 
 test:
 	$(MAKE) -C $(LIBFT_DIR)
