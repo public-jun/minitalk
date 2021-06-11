@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 22:04:10 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/10 22:21:45 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/11 17:28:16 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	send_bit(pid_t server_pid, unsigned char byte)
 			}
 		}
 		counter >>= 1;
-		usleep(600);
+		usleep(100);
 	}
 }
 
