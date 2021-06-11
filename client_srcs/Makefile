@@ -6,7 +6,8 @@ CC := gcc
 LIBFT_DIR := ../libft
 LIBFT_LIB := $(LIBFT_DIR)/libft.a
 
-SRCS := ./main.c
+SRCS := ./main.c \
+		./send.c
 OBJS := $(SRCS:%.c=%.o)
 
 INCLUDE := ../includes
