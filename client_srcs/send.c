@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 22:04:10 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/18 16:46:48 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/19 18:10:17 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	send_bit(pid_t server_pid, unsigned char byte)
 		{
 			if (kill(server_pid, SIGUSR1) < 0)
 			{
-				perror("kill out:");
 				ft_putstr_fd("kill error\n", 2);
 				exit(EXIT_FAILURE);
 			}
