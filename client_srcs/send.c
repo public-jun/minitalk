@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 22:04:10 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/11 17:28:16 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/18 16:46:48 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,22 @@ void	send_bit(pid_t server_pid, unsigned char byte)
 	}
 }
 
+static void	print_client_pid(char *client_pid)
+{
+	ft_putstr_fd("\x1b[33m", 1);
+	ft_putstr_fd("[ CLIENT ProcessID: ", 1);
+	ft_putstr_fd(client_pid, 1);
+	ft_putstr_fd(" ]\x1b[0m\n", 1);
+}
+
+void	print_success_mess(char *mess)
+{
+	ft_putstr_fd("\x1b[32m", 1);
+	ft_putstr_fd("[ SUCCESS: ", 1);
+	ft_putstr_fd(mess, 1);
+	ft_putstr_fd(" ]\x1b[0m\n", 1);
+}
+
 void	send_client_pid(pid_t server_pid)
 {
 	pid_t	pid;
@@ -54,6 +70,7 @@ void	send_client_pid(pid_t server_pid)
 		ft_putstr_fd("ft_itoa error\n", 2);
 		exit(EXIT_FAILURE);
 	}
+	print_client_pid(client_pid);
 	tmp = client_pid;
 	while (*tmp)
 	{

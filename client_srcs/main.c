@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 17:16:14 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/11 17:35:10 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/18 16:11:12 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ void	send_process(pid_t pid, char *str)
 {
 	init_sigaction();
 	send_client_pid(pid);
+	print_success_mess("Send ProcessID!!");
 	send_string(pid, str);
+	print_success_mess("Send String!!");
 	while (1)
 	{
 		if (g_signo == SIGUSR2)

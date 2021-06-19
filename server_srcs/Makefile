@@ -9,6 +9,7 @@ LIBFT_LIB := $(LIBFT_DIR)/libft.a
 SRCS := ./main.c \
 		./init.c \
 		./print_string.c \
+		./receive_bit.c \
 		./ack.c
 
 OBJS := $(SRCS:%.c=%.o)

@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 23:18:46 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/11 16:44:13 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/18 16:46:32 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ void	get_bit(int signo);
 
 /*
 ** print_string.c
+*/
+void	print_mess(char (*mess)[], pid_t client_pid);
+void	print_max_buffer(char (*mess)[], t_bool_info *info);
+void	print_client_pid(char *client_pid);
+
+/*
+** receive_bit.c
 */
 void	process_receive_bit(char (*mess)[],
 			char (*p_client)[], t_bool_info *info);
