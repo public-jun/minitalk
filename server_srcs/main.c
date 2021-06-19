@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/11 16:40:03 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/19 16:15:47 by nakahodoju       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,17 @@ void	print_server_pid(void)
 	free_set(&pid, NULL);
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	char		message[BUFFER_SIZE];
 	char		p_client[BUFFER_SIZE];
 	t_bool_info	bool_info;
 
+	if (ac != 1)
+	{
+		ft_putstr_fd("invalid argment\n", 2);
+		exit(1);
+	}
 	print_server_pid();
 	init_buff(message, p_client);
 	init_bool(&bool_info);

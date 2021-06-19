@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 22:04:10 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/19 18:10:17 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/19 17:06:09 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,13 @@ void	send_client_pid(pid_t server_pid)
 
 void	send_string(pid_t server_pid, char *str)
 {
+	int	send_counter;
+
+	send_counter = 0;
 	while (*str)
 	{
+		if (send_counter == 100000)
+			ft_err_exit("too long\n");
 		if (g_signo != SIGUSR1)
 			pause();
 		g_signo = 0;
@@ -97,5 +102,6 @@ void	send_string(pid_t server_pid, char *str)
 			send_bit(server_pid, *str);
 			send_bit(server_pid, EOT);
 		}
+		send_counter++;
 	}
 }
