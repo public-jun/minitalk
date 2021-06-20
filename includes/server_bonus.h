@@ -6,12 +6,12 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 23:18:46 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/20 20:40:13 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/20 20:58:40 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#ifndef SERVER_BONUS_H
+# define SERVER_BONUS_H
 
 # include <unistd.h>
 # include <signal.h>
