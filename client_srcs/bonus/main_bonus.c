@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 17:16:14 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/20 11:53:43 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/19 21:04:30 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <client.h>
+#include <client_bonus.h>
 
 int	g_signo = 0;
 
@@ -56,7 +56,9 @@ void	send_process(pid_t pid, char *str)
 {
 	init_sigaction();
 	send_client_pid(pid);
+	print_success_mess("Send ProcessID!!");
 	send_string(pid, str);
+	print_success_mess("Send String!!");
 	while (1)
 	{
 		if (g_signo == SIGUSR2)
