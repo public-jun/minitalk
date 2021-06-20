@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   server_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 23:18:46 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/20 20:40:32 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/20 20:40:13 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	get_bit(int signo);
 */
 void	print_mess(char (*mess)[], pid_t client_pid);
 void	print_max_buffer(char (*mess)[], t_bool_info *info);
+void	print_client_pid(char *client_pid);
 
 /*
 ** receive_bit.c

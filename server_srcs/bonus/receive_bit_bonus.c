@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   receive_bit.c                                      :+:      :+:    :+:   */
+/*   receive_bit_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 16:19:03 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/20 20:40:20 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/20 20:43:00 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <server.h>
+#include <server_bonus.h>
 
 static pid_t	get_client_pid(t_bool_info *info,
 					char (*p_client)[], char (*message)[])
@@ -22,6 +22,7 @@ static pid_t	get_client_pid(t_bool_info *info,
 	info->b_client_pid = true;
 	client_pid = (pid_t)ft_atoi(*p_client);
 	g_tmp = *message;
+	print_client_pid(*p_client);
 	return (client_pid);
 }
 

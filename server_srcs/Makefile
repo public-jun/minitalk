@@ -1,4 +1,5 @@
 NAME := server
+BONUSNAME := server_bonus
 
 CC := gcc
 #CFLAGS := -Wall -Wextra -Werror
@@ -11,8 +12,14 @@ SRCS := ./main.c \
 		./print_string.c \
 		./receive_bit.c \
 		./ack.c
-
 OBJS := $(SRCS:%.c=%.o)
+
+BONUSSRCS := ./main.c \
+		./init.c \
+		./bonus/print_string_bonus.c \
+		./bonus/receive_bit_bonus.c \
+		./ack.c
+BONUSOBJS := $(BONUSSRCS:%.c=%.o)
 INCLUDE := ../includes
 
 RM := rm -f
@@ -23,6 +30,9 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT_LIB)
 	$(CC) $(CFLAGS) -I $(INCLUDE) $(OBJS) $(LIBFT_LIB) -o $@
 
+$(BONUSNAME): $(BONUSOBJS) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) $(BONUSOBJS) $(LIBFT_LIB) -o $@
+
 .c.o:
 	$(CC) $(CFLAGS) -I $(INCLUDE) -c $< -o $@
 
@@ -31,13 +41,15 @@ $(LIBFT_LIB): $(LIBFT_DIR)
 
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(BONUSOBJS)
 
 fclean:
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(RM) $(OBJS) $(NAME)
+	$(RM) $(OBJS) $(BONUSOBJS) $(BONUSNAME) $(NAME)
 
 re: fclean all
+
+bonus: $(BONUSNAME)
 
 test:
 	$(MAKE) -C $(LIBFT_DIR)
@@ -52,4 +64,4 @@ test_sanitize:
 	$(CC)  -fsanitize=address -fno-omit-frame-pointer -g $(SRCS) $(LIBFT_LIB) -I $(INCLUDE) -o $(NAME)
 	./$(NAME)
 
-.PHONY: all clean fclean re test test_valgrind test_sanitize
+.PHONY: all clean fclean re bonus test test_valgrind test_sanitize

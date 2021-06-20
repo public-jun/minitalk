@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_string.c                                     :+:      :+:    :+:   */
+/*   print_string_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/11 16:03:40 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/20 20:40:24 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/20 20:39:37 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,12 @@ void	print_max_buffer(char (*mess)[], t_bool_info *info)
 	g_now_byte = 0;
 	info->b_byte_reset = true;
 	g_tmp = *mess;
+}
+
+void	print_client_pid(char *client_pid)
+{
+	ft_putstr_fd("\x1b[33m", 1);
+	ft_putstr_fd("[ CLIENT ProcessID: ", 1);
+	ft_putstr_fd(client_pid, 1);
+	ft_putstr_fd(" ]\x1b[0m", 1);
 }
