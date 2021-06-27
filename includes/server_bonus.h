@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 23:18:46 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/20 20:58:40 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/27 16:12:27 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,18 @@ typedef struct s_bool_info
 	bool	b_byte_reset;
 }	t_bool_info;
 
-extern char	*g_tmp;
-extern int	g_now_bit;
-extern int	g_now_byte;
+// extern char	*g_tmp;
+// extern int	g_now_bit;
+// extern int	g_now_byte;
+
+typedef struct s_data
+{
+	char	*tmp;
+	int		now_bit;
+	int		now_byte;
+}	t_data;
+
+extern t_data g_t_data;
 
 /*
 ** init.c
