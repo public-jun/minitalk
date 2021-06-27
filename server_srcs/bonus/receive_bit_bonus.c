@@ -6,16 +6,16 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 16:19:03 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/27 15:59:32 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/27 18:23:25 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <server_bonus.h>
 
-static pid_t get_client_pid(t_bool_info *info,
+static pid_t	get_client_pid(t_bool_info *info,
 							char (*p_client)[], char (*message)[])
 {
-	pid_t client_pid;
+	pid_t	client_pid;
 
 	g_t_data.now_byte = 0;
 	info->b_byte_reset = true;
@@ -26,7 +26,7 @@ static pid_t get_client_pid(t_bool_info *info,
 	return (client_pid);
 }
 
-static void reset_buff(char (*mess)[],
+static void	reset_buff(char (*mess)[],
 					   char (*p_client)[], pid_t *client_pid, t_bool_info *info)
 {
 	ft_memset(*mess, 0b0, BUFFER_SIZE);
@@ -39,10 +39,10 @@ static void reset_buff(char (*mess)[],
 	g_t_data.tmp = *p_client;
 }
 
-void process_receive_bit(char (*mess)[],
+void	process_receive_bit(char (*mess)[],
 						 char (*p_client)[], t_bool_info *info)
 {
-	pid_t client_pid;
+	pid_t	client_pid;
 
 	client_pid = 0;
 	while (1)

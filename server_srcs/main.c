@@ -6,17 +6,15 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 22:58:04 by nakahodoju        #+#    #+#             */
-/*   Updated: 2021/06/27 16:10:04 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/06/27 18:21:06 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <server.h>
 
+t_data	g_t_data;
 
-
-t_data g_t_data;
-
-void get_bit(int signo)
+void	get_bit(int signo)
 {
 	g_t_data.tmp[g_t_data.now_byte] <<= 1;
 	if (signo == SIGUSR1)
@@ -24,9 +22,9 @@ void get_bit(int signo)
 	g_t_data.now_bit++;
 }
 
-void print_server_pid(void)
+void	print_server_pid(void)
 {
-	char *pid;
+	char	*pid;
 
 	pid = ft_itoa((int)getpid());
 	if (!pid)
@@ -40,11 +38,11 @@ void print_server_pid(void)
 	free_set(&pid, NULL);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	char message[BUFFER_SIZE];
-	char p_client[BUFFER_SIZE];
-	t_bool_info bool_info;
+	char		message[BUFFER_SIZE];
+	char		p_client[BUFFER_SIZE];
+	t_bool_info	bool_info;
 
 	g_t_data.tmp = NULL;
 	g_t_data.now_bit = 0;
