@@ -6,7 +6,7 @@
 /*   By: jnakahod <jnakahod@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 22:06:27 by jnakahod          #+#    #+#             */
-/*   Updated: 2021/06/19 20:30:29 by jnakahod         ###   ########.fr       */
+/*   Updated: 2021/07/01 11:42:06 by jnakahod         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ extern int	g_signo;
 void	send_bit(pid_t server_pid, unsigned char byte);
 void	send_client_pid(pid_t server_pid);
 void	send_string(pid_t server_pid, char *str);
-// void	print_success_mess(char *mess);
 void	ft_err_exit(char *mess);
 #endif
